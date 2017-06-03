@@ -1,0 +1,14 @@
+/* Grid: https://stackoverflow.com/a/21014940 */
+#div-outer {	
+	width: 300px;	
+	margin: auto;
+}
+
+#div-outer div {
+	width: 100px;
+	height: 100px;
+	outline: solid 1px black;
+	float: left;
+	margin: 0;
+	padding: 0;
+}
