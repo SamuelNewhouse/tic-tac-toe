@@ -12,6 +12,10 @@ $(function () {
 			playerTurn = playerTurn === "X" ? "O" : "X";
 		}
 
+		function resetBoard() {
+			
+		}
+
 		function doWin() {
 
 		}
@@ -47,12 +51,10 @@ $(function () {
 					$("#" + id + " > div").html(playerTurn);
 					testWin();
 					endTurn();
-				}
-				console.log();
+				}				
 			}
 		};
-	})();
-	console.log(boardTracker);
+	})();	
 
 	function handleClicks() {		
 		boardTracker.tryPlacement(this.id);
