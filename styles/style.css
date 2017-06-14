@@ -6,16 +6,50 @@ div {
 	height: 100px;
 }
 
+#div-header {
+	width: 300px;
+	height: 50px;
+	margin: auto;
+}
+
+#div-header > div {
+	line-height: 50px;
+	width: 300px;
+	height: 50px;
+	outline: solid 1px black;
+	margin: 0;
+	padding: 0;
+}
+
 #div-outer {
+	position: relative;
 	width: 300px;
 	margin: auto;
 }
 
-#div-outer > div {
-	width: 100px;
-	height: 100px;
+.play-square {
 	outline: solid 1px black;
 	float: left;
 	margin: 0;
 	padding: 0;
+}
+
+#popup-button {
+	display: none;
+	position: absolute;
+	outline: solid 1px red;
+	z-index: 5;
+	width: 200px;
+	height: 75px;
+	left: 50px;
+	top: 112px;
+}
+
+#popup-button > div {
+	position: absolute;	
+	text-align: center;
+	line-height: 75px;
+	width: 200px;
+	height: 75px;
+	top: -15px;
 }

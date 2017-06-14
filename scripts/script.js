@@ -1,7 +1,9 @@
 $(function () {
 
 	var boardTracker = (function(){
+		var gameOver = false;
 		var playerTurn = "X";
+		var turnNum = 1;
 		var cells = {
 			"top-left" : "", "top-middle" : "", "top-right" : "",
 			"middle-left" : "", "middle-middle" : "", "middle-right" : "",
@@ -9,7 +11,8 @@ $(function () {
 		};
 
 		function endTurn() {
-			playerTurn = playerTurn === "X" ? "O" : "X";
+			turnNum++;
+			playerTurn = playerTurn === "X" ? "O" : "X";			
 		}
 
 		function resetBoard() {
@@ -17,41 +20,56 @@ $(function () {
 		}
 
 		function doWin() {
+			$("#div-header > div").html(playerTurn + " wins.");
+			gameOver = true;
+			$("#popup-button").show();
+		}
 
+		function doDraw() {
+			$("#div-header > div").html("Draw.");
+			gameOver = true;
+			$("#popup-button").show();
 		}
 
 		function testWin() {
 			var testStarts = [cells["top-left"], cells["top-middle"], cells["top-right"], cells["middle-left"], cells["bottom-left"]];
 			// Testing from Top Left
-			if(	(testStarts[0] !== "") &&
+			if(	(testStarts[0] !== "") && (
 					(testStarts[0] === cells["top-middle"] && testStarts[0] === cells["top-right"]) || // Rightward
 					(testStarts[0] === cells["middle-left"] && testStarts[0] === cells["bottom-left"]) || // Downward
-					(testStarts[0] === cells["middle-middle"] && testStarts[0] === cells["bottom-right"]) ) { // Diagonal
+					(testStarts[0] === cells["middle-middle"] && testStarts[0] === cells["bottom-right"]) ) ){ // Diagonal
+				console.log("Top Left win");
 				doWin();
 			// Testing from Top Middle... Downward
 			} else if(	(testStarts[1] !== "") && (testStarts[1] === cells["middle-middle"] && testStarts[1] === cells["bottom-middle"]) ) {
+				console.log("Top Middle win");
 				doWin();
 			// Testing from Top Right
-			} else if(	(testStarts[2] !== "") &&
+			} else if(	(testStarts[2] !== "") && (
 									(testStarts[2] === cells["middle-right"] && testStarts[2] === cells["bottom-right"]) || // Downward
-									(testStarts[2] === cells["middle-middle"] && testStarts[2] === cells["bottom-left"]) ) { // Diagonal
+									(testStarts[2] === cells["middle-middle"] && testStarts[2] === cells["bottom-left"]) ) ){ // Diagonal
+				console.log("Top Right win");
 				doWin();
 			// Testing from Middle Left... Rightward
 			} else if(	(testStarts[3] !== "") && (testStarts[3] === cells["middle-middle"] && testStarts[3] === cells["middle-right"]) ) {
+				console.log("Middle Left win");
 				doWin();
 			// Testing from Bottom Left... Rightward
 			} else if(	(testStarts[4] !== "") && (testStarts[4] === cells["bottom-middle"] && testStarts[4] === cells["bottom-right"]) ) {
+				console.log("Bottom Left win");
 				doWin();
+			} else if( turnNum === 9 ) {
+				doDraw();
 			}
 		}
 		return {
 			tryPlacement: function(id){
-				if(cells[id] === "") {
+				if(!gameOver && cells[id] === "") {
 					cells[id] = playerTurn;
-					$("#" + id + " > div").html(playerTurn);
+					$("#" + id + " > div").html(playerTurn);					
 					testWin();
 					endTurn();
-				}				
+				}
 			}
 		};
 	})();	
