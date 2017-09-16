@@ -39,17 +39,18 @@ div {
 	position: absolute;
 	outline: solid 1px red;
 	z-index: 5;
-	width: 200px;
-	height: 75px;
-	left: 50px;
-	top: 112px;
+	width: 80%;
+	height: auto;
+	left: 10%;
+	top: 0px;
+	background-color: black;
 }
 
 #popup-button > div {
-	position: absolute;	
+	position: relative;
 	text-align: center;
-	line-height: 75px;
-	width: 200px;
-	height: 75px;
-	top: -15px;
+	width: auto;
+	height: auto;
+	color: white;
+	background-color: gray;
 }

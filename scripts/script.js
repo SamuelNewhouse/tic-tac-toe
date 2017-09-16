@@ -28,16 +28,20 @@ $(function () {
 			turnNum = 1;
 		}
 
+		function playerSelect() {
+			$("#popup-button").show();
+		}
+
 		function doWin() {
 			$("#div-header > div").html(playerTurn + " wins.");
 			gameOver = true;
-			$("#popup-button").show();
+			playerSelect();
 		}
 
 		function doDraw() {
 			$("#div-header > div").html("Draw.");
 			gameOver = true;
-			$("#popup-button").show();
+			playerSelect();
 		}
 
 		function testWin() {
@@ -72,6 +76,8 @@ $(function () {
 			}
 		} // testWin()
 
+		playerSelect();
+
 		return {
 			// *** Public methods and variables. ***
 			tryPlacement: function (id) {
@@ -81,11 +87,11 @@ $(function () {
 					testWin();
 					endTurn();
 				}
-				else if (gameOver && id === "popup-button") {
+				else if (id === "popup-button") {
 					resetBoard();
 				}
 			}
-		}; // return
+		}; // return		
 	})();
 
 	function handleClicks() {
@@ -94,5 +100,5 @@ $(function () {
 	}
 	$("#div-outer div").each(function () {
 		$(this).click(handleClicks);
-	});
+	});	
 });
