@@ -126,8 +126,7 @@ $(function () {
 
 				return next;
 			}
-
-		}
+		} // AIAction
 
 		AIAction.ASCENDING = function (firstAction, secondAction) {
 			if (firstAction.minimaxVal < secondAction.minimaxVal)
@@ -145,6 +144,17 @@ $(function () {
 				return 1; //indicates that secondAction goes before firstAction
 			else
 				return 0; //indicates a tie
+		}
+
+		var Game = function(autoPlayer) {
+			this.ai = autoPlayer;
+			this.currentState = new State();
+			this.currentState.board = ["","","",
+																 "","","",
+																 "","",""];
+			this.currentState.turn = "X";
+			this.status = "beginning";
+			
 		}
 		
 		var gameOver = false;
@@ -198,13 +208,6 @@ $(function () {
 			$("#" + id + " > div").html(playerTurn);
 			testWin();
 			endTurn();
-		}
-
-		function evalHumanWin() {
-		}
-
-		function evalComputerWin() {
-
 		}
 
 		function doComputerTurn() {
