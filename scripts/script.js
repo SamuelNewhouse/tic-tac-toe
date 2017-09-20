@@ -154,6 +154,13 @@ $(function () {
 																 "","",""];
 			this.currentState.turn = "X";
 			this.status = "beginning";
+
+			this.advanceTo = function(_state) {
+				this.currentState = _state;
+				if(_state.isTerminal()) {
+					this.status = "ended";
+				}
+			}
 			
 		}
 		
