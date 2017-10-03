@@ -82,19 +82,150 @@ $(function () {
 			var game = {};
 
 			function minimaxValue(state) {
+				if (state.isTerminal()) {
+					//a terminal game state is the base case
+					return Game.score(state);
+				}
+				else {
+					var stateScore; // this stores the minimax value we'll compute
 
+					if (state.turn === "X")
+						// X maximizs --> initialize to a value smaller than any possible score
+						stateScore = -1000;
+					else
+						// O minimizes --> initialize to a value larger than any possible score
+						stateScore = 1000;
+
+					var availablePositions = state.emptyCells();
+
+					//enumerate next available states using the info form available positions
+					var availableNextStates = availablePositions.map(function (pos) {
+						var action = new AIAction(pos);
+
+						var nextState = action.applyTo(state);
+
+						return nextState;
+					});
+
+					/* calculate the minimax value for all available next states
+					 * and evaluate the current state's value */
+					availableNextStates.forEach(function (nextState) {
+
+						var nextScore = minimaxValue(nextState); //recursive call
+
+						if (state.turn === "X") {
+							// X wants to maximize --> update stateScore iff nextScore is larger
+							if (nextScore > stateScore)
+								stateScore = nextScore;
+						}
+						else {
+							// O wants to minimize --> update stateScore iff nextScore is smaller
+							if (nextScore < stateScore)
+								stateScore = nextScore;
+						}
+					});
+
+					//backup the minimax value
+					return stateScore;
+				}
 			}
 
-			function takeABlindMove(turn) { // @param turn [String]: the player to play, either X or O
+			function takeABlindMove(turn) {
+				var available = game.currentState.emptyCells();
+				var randomCell = available[Math.floor(Math.random() * available.length)];
+				var action = new AIAction(randomCell);
 
+				var next = action.applyTo(game.currentState);
+
+				ui.insertAt(randomCell, turn);
+
+				game.advanceTo(next);
 			}
 
-			function takANoviceMove(turn) { // @param turn [String]: the player to play, either X or O
+			function takeANoviceMove(turn) {
+				var available = game.currentState.emptyCells();
 
-			}
+				//enumerate and calculate the score for each available actions to the ai player
+				var availableActions = available.map(function (pos) {
+					var action = new AIAction(pos); //create the action object
 
-			function takeAMasterMove(turn) { // @param turn [String]: the player to play, either X or O
+					//get next state by applying the action
+					var nextState = action.applyTo(game.currentState);
 
+					//calculate and set the action's minimax value
+					action.minimaxVal = minimaxValue(nextState);
+
+					return action;
+				});
+
+				//sort the enumerated actions list by score
+				if (turn === "X")
+					//X maximizes --> decend sort the actions to have the maximum minimax at first
+					availableActions.sort(AIAction.DESCENDING);
+				else
+					//O minimizes --> ascend sort the actions to have the minimum minimax at first
+					availableActions.sort(AIAction.ASCENDING);
+
+
+				/*
+				 * take the optimal action 40% of the time
+				 * take the 1st suboptimal action 60% of the time
+				 */
+				var chosenAction;
+				if (Math.random() * 100 <= 40) {
+					chosenAction = availableActions[0];
+				}
+				else {
+					if (availableActions.length >= 2) {
+						//if there is two or more available actions, choose the 1st suboptimal
+						chosenAction = availableActions[1];
+					}
+					else {
+						//choose the only available actions
+						chosenAction = availableActions[0];
+					}
+				}
+				var next = chosenAction.applyTo(game.currentState);
+
+				ui.insertAt(chosenAction.movePosition, turn);
+
+				game.advanceTo(next);
+			};
+
+			function takeAMasterMove(turn) {
+				var available = game.currentState.emptyCells();
+
+				//enumerate and calculate the score for each avaialable actions to the ai player
+				var availableActions = available.map(function (pos) {
+					var action = new AIAction(pos); //create the action object
+
+					//get next state by applying the action
+					var next = action.applyTo(game.currentState);
+
+					//calculate and set the action's minmax value
+					action.minimaxVal = minimaxValue(next);
+
+					return action;
+				});
+
+				//sort the enumerated actions list by score
+				if (turn === "X")
+					//X maximizes --> descend sort the actions to have the largest minimax at first
+					availableActions.sort(AIAction.DESCENDING);
+				else
+					//O minimizes --> acend sort the actions to have the smallest minimax at first
+					availableActions.sort(AIAction.ASCENDING);
+
+
+				//take the first action as it's the optimal
+				var chosenAction = availableActions[0];
+				var next = chosenAction.applyTo(game.currentState);
+
+				// this just adds an X or an O at the chosen position on the board in the UI
+				ui.insertAt(chosenAction.movePosition, turn);
+
+				// take the game to the next state
+				game.advanceTo(next);
 			}
 
 			this.plays = function (_game) {
@@ -146,24 +277,68 @@ $(function () {
 				return 0; //indicates a tie
 		}
 
-		var Game = function(autoPlayer) {
+		var Game = function (autoPlayer) {
 			this.ai = autoPlayer;
 			this.currentState = new State();
-			this.currentState.board = ["","","",
-																 "","","",
-																 "","",""];
+			this.currentState.board = ["", "", "",
+				"", "", "",
+				"", "", ""];
 			this.currentState.turn = "X";
 			this.status = "beginning";
 
-			this.advanceTo = function(_state) {
+			this.advanceTo = function (_state) {
 				this.currentState = _state;
-				if(_state.isTerminal()) {
+				if (_state.isTerminal()) {
 					this.status = "ended";
+
+					if (_state.result === "X-won")
+						ui.switchViewTo("won");
+					else if (_state.result === "O-won")
+						ui.switchViewTo("lost");
+					else
+						ui.switchViewTo("draw");
+				}
+				else {
+					//the game is still running
+
+					if (this.currentState.turn === "X") {
+						ui.switchViewTo("human");
+					}
+					else {
+						ui.switchViewTo("robot");
+
+						//notify the AI player its turn has come up
+						this.ai.notify("O");
+					}
+				}
+
+				this.start = function () {
+					if (this.status = "beginning") {
+						//invoke advanceTo with the intial state
+						this.advanceTo(this.currentState);
+						this.status = "running";
+					}
+				}
+			};
+		}
+
+		Game.score = function (_state) {
+			if (_state.result !== "still running") {
+				if (_state.result === "X-won") {
+					// the x player won
+					return 10 - _state.oMovesCount;
+				}
+				else if (_state.result === "O-won") {
+					//the x player lost
+					return -10 + _state.oMovesCount;
+				}
+				else {
+					//it's a draw
+					return 0;
 				}
 			}
-			
 		}
-		
+
 		var gameOver = false;
 		var playerTurn = "X";
 		var humanSide = "X";
