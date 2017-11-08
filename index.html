@@ -1,35 +1,53 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
+    <head>
+        <title>Tic-Tac-Toe AI</title>
+        <link rel = 'stylesheet' type = 'text/css' href = 'styles/ui.css'>
+    </head>
 
-<head>
-	<meta name="description" content='This is my submission for the "Build a Tic Tac Toe Game" project on www.freecodecamp.com.'>
-	<meta name="author" content="Samuel Newhouse">
-	<meta charset="utf-8">
-	<link href="styles/style.css" rel="stylesheet" type="text/css">
-	<title>Tic Tac Toe</title>
-</head>
+    <body>
+        <div class = 'main-container'>
+            <div class = 'board'>
+                <!-- data-indx following cell divs represents cell index in 1D array representation -->
+                <div class='cell' data-indx = "0" ></div>
+                <div class='cell' data-indx = "1" ></div>
+                <div class='cell' data-indx = "2" ></div>
+                <div class='cell' data-indx = "3" ></div>
+                <div class='cell' data-indx = "4" ></div>
+                <div class='cell' data-indx = "5" ></div>
+                <div class='cell' data-indx = "6" ></div>
+                <div class='cell' data-indx = "7" ></div>
+                <div class='cell' data-indx = "8" ></div>
+            </div>
 
-<body>	
-	<div id="div-header">
-		<div>
-		</div>
-	</div>
-	<div id="div-outer">
-		<div id="popup-button"><div id="play-x"><h2>Play as X.</h2></div><div id="play-o"><h2>Play as O.</h2></div></div>
-		<div id="top-left" class="play-square"><div> </div></div>
-		<div id="top-middle" class="play-square"><div> </div></div>
-		<div id="top-right" class="play-square"><div> </div></div>
-		<div id="middle-left" class="play-square"><div> </div></div>
-		<div id="middle-middle" class="play-square"><div> </div></div>
-		<div id="middle-right" class="play-square"><div> </div></div>
-		<div id="bottom-left" class="play-square"><div> </div></div>
-		<div id="bottom-middle" class="play-square"><div> </div></div>
-		<div id="bottom-right" class="play-square"><div> </div></div>
-	</div>
+            <div class = 'control'>
+                <!-- div.intial displays the starting controls -->
+                <div class = 'intial'>
+                    <div class = 'difficulty'>
+                        <span class = 'level not-selected' id = "blind">Blind</span>
+                        <span class = 'level not-selected' id = "novice">Novice</span>
+                        <span class = 'level not-selected' id = "master">Master!</span>
+                    </div>
 
-	<footer>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script src="scripts/script.js"></script>
-	</footer>
-</body>
+                    <div class='start'> Start </div>
+                </div>
+
+                <!-- div.ingame displays in-game messages and controls -->
+                <div class = 'ingame' id="human">It's your turn ...</div>
+                <div class = 'ingame' id="ai">
+                    <img src = "imgs/robot.png" id = "robot" class = "robot" />
+                    <p>Waint for it ...</p>
+                </div>
+                <div class = 'ingame' id="won">You won !</div>
+                <div class = 'ingame' id="lost">You lost !</div>
+                <div class = 'ingame' id="draw">It's a Draw</div>
+            </div>
+        </div>
+
+        <script src = "scripts/jquery-1.10.1.min.js"></script>
+        <script src = "scripts/ui.js"></script>
+        <script src = "scripts/game.js"></script>
+        <script src = "scripts/ai.js"></script>
+        <script src = "scripts/control.js"></script>
+    </body>
 </html>
