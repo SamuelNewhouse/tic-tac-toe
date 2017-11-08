@@ -36,6 +36,7 @@ ui.switchViewTo = function (turn) {
 
   //helper function for async calling
   function _switch(_turn) {
+    console.log("Switching view to: " + _turn);
     ui.currentView = "#" + _turn;
     $(ui.currentView).fadeIn("fast");
 
@@ -44,18 +45,19 @@ ui.switchViewTo = function (turn) {
   }
 
   if (ui.intialControlsVisible) {
-    //if the game is just starting
-    ui.intialControlsVisible = false;
+    // if the game is just starting
+    ui.intialControlsVisible = false;    
 
     $('.intial').fadeOut({
       duration: "slow",
       done: function () {
+        $('#restart').fadeIn("fast");
         _switch(turn);
-      }
-    });
+      }      
+    });    
   }
   else {
-    //if the game is in an intermediate state
+    // if the game is in an intermediate state
     $(ui.currentView).fadeOut({
       duration: "fast",
       done: function () {

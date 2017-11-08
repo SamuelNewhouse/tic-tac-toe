@@ -8,6 +8,7 @@
 
 <body>
   <div class='main-container'>
+    <div class='title'>Tic Tac Toe</div>
     <div class='board'>
       <!-- data-indx following cell divs represents cell index in 1D array representation -->
       <div class='cell' data-indx="0"></div>
@@ -27,9 +28,12 @@
         <div class='difficulty'>
           <span class='level not-selected' id="blind">Blind</span>
           <span class='level not-selected' id="novice">Novice</span>
-          <span class='level not-selected' id="master">Master!</span>
+          <span class='level not-selected' id="master">Master</span>
         </div>
-
+        <div class='turn-choice'>
+          <span class='xo not-selected' id="X">X</span>
+          <span class='xo not-selected' id="O">O</span>
+        </div>
         <div class='start'> Start </div>
       </div>
 
@@ -37,12 +41,14 @@
       <div class='ingame' id="human">It's your turn ...</div>
       <div class='ingame' id="ai">
         <img src="imgs/robot.png" id="robot" class="robot" />
-        <p>Waint for it ...</p>
+        <p>Wait for it ...</p>
       </div>
-      <div class='ingame' id="won">You won !</div>
-      <div class='ingame' id="lost">You lost !</div>
+      <div class='ingame' id="won">You won!</div>
+      <div class='ingame' id="lost">You lost!</div>
       <div class='ingame' id="draw">It's a Draw</div>
+      <div class='ingame' id="restart">Restart</div>
     </div>
+    <div class="author">Made by <a href="https://github.com/SamuelNewhouse" target="_blank">Samuel Newhouse</a></p></div>
   </div>
 
   <script src="scripts/jquery-1.10.1.min.js"></script>

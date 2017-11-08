@@ -11,8 +11,8 @@ var globals = {};
 $(".level").each(function () {
   var $this = $(this);
   $this.click(function () {
-    $('.selected').toggleClass('not-selected');
-    $('.selected').toggleClass('selected');
+    $('.difficulty > .selected').toggleClass('not-selected');
+    $('.difficulty > .selected').toggleClass('selected');
     $this.toggleClass('not-selected');
     $this.toggleClass('selected');
 
@@ -20,39 +20,55 @@ $(".level").each(function () {
   });
 });
 
+$(".xo").each(function () {
+  var $this = $(this);
+  $this.click(function () {
+    $('.turn-choice > .selected').toggleClass('not-selected');
+    $('.turn-choice > .selected').toggleClass('selected');
+    $this.toggleClass('not-selected');
+    $this.toggleClass('selected');
+  });
+});
+
 /*
  * start game (onclick div.start) behavior and control
  * when start is clicked and a level is chosen, the game status changes to "running"
- * and UI view to swicthed to indicate that it's human's trun to play
+ * and UI view to switched to indicate that it's human's turn to play
  */
 $(".start").click(function () {
-  var selectedDiffeculty = $('.selected').attr("id");
-  if (typeof selectedDiffeculty !== "undefined") {
-    var aiPlayer = new AI(selectedDiffeculty);
+  var selectedDifficulty = $('.difficulty > .selected').attr("id");
+  var selectedSide = $('.turn-choice > .selected').attr("id");
+  if (typeof selectedDifficulty !== "undefined" && typeof selectedSide !== "undefined") {
+    var aiPlayer = new AI(selectedDifficulty);
     globals.game = new Game(aiPlayer);
 
     aiPlayer.plays(globals.game);
 
-    globals.game.start();
+    globals.game.start(selectedSide);
   }
+});
+
+$("#restart").click(function () {
+  location.reload();
 });
 
 /*
  * click on cell (onclick div.cell) behavior and control
  * if an empty cell is clicked when the game is running and its the human player's trun
- * get the indecies of the clickd cell, craete the next game state, upadet the UI, and
- * advance the game to the new created state
+ * get the indices of the clicked cell, craete the next game state, update the UI, and
+ * advance the game to the newly created state
  */
 $(".cell").each(function () {
   var $this = $(this);
   $this.click(function () {
-    if (globals.game.status === "running" && globals.game.currentState.turn === "X" && !$this.hasClass('occupied')) {
+    var humanSide = globals.game.humanSide;
+    if (globals.game.status === "running" && globals.game.currentState.turn === humanSide && !$this.hasClass('occupied')) {
       var indx = parseInt($this.data("indx"));
 
       var next = new State(globals.game.currentState);
-      next.board[indx] = "X";
+      next.board[indx] = humanSide;
 
-      ui.insertAt(indx, "X");
+      ui.insertAt(indx, humanSide);
 
       next.advanceTurn();
 

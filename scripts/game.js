@@ -3,7 +3,6 @@
  * @param old [State]: old state to intialize the new state
  */
 var State = function (old) {
-
   /*
    * public : the player who has the turn to player
    */
@@ -111,6 +110,8 @@ var State = function (old) {
  * @param autoPlayer [AIPlayer] : the AI player to be play the game with
  */
 var Game = function (autoPlayer) {
+  this.humanSide = "X"; // Added to support being either X or O.
+  this.AISide = "O"; // Added to support being either X or O.
 
   //public : initialize the ai player for this game
   this.ai = autoPlayer;
@@ -151,15 +152,15 @@ var Game = function (autoPlayer) {
     }
     else {
       //the game is still running
-
-      if (this.currentState.turn === "X") {
+      if (this.currentState.turn === this.humanSide) { // Modified to support being X or O.
+        console.log("Switching view to human.");
         ui.switchViewTo("human");
       }
       else {
+        console.log("Switching view to robot.");
         ui.switchViewTo("robot");
-
         //notify the AI player its turn has come up
-        this.ai.notify("O");
+        this.ai.notify(this.AISide);
       }
     }
   };
@@ -167,8 +168,10 @@ var Game = function (autoPlayer) {
   /*
    * starts the game
    */
-  this.start = function () {
+  this.start = function (_humanSide) {
     if (this.status = "beginning") {
+      this.humanSide = _humanSide; // Modified to support being X or O.
+      this.AISide = _humanSide === "X" ? "O" : "X"; // Modified to support being X or O.
       //invoke advanceTo with the initial state
       this.advanceTo(this.currentState);
       this.status = "running";
