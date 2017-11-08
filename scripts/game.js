@@ -140,11 +140,13 @@ var Game = function (autoPlayer) {
     if (_state.isTerminal()) {
       this.status = "ended";
 
-      if (_state.result === "X-won")
-        //X won
+      if (_state.result === "X-won" && this.humanSide === "X")
         ui.switchViewTo("won");
-      else if (_state.result === "O-won")
-        //X lost
+      else if (_state.result === "O-won" && this.humanSide === "O")
+        ui.switchViewTo("won");
+      else if (_state.result === "X-won" && this.humanSide === "O")
+        ui.switchViewTo("lost");
+      else if (_state.result === "O-won" && this.humanSide === "X")
         ui.switchViewTo("lost");
       else
         //it's a draw
@@ -153,14 +155,15 @@ var Game = function (autoPlayer) {
     else {
       //the game is still running
       if (this.currentState.turn === this.humanSide) { // Modified to support being X or O.
-        console.log("Switching view to human.");
+        console.log("Human turn.");
         ui.switchViewTo("human");
       }
-      else {
-        console.log("Switching view to robot.");
+      else if (this.currentState.turn === this.AISide){
+        console.log("Robot turn.");
         ui.switchViewTo("robot");
         //notify the AI player its turn has come up
-        this.ai.notify(this.AISide);
+        var that = this;
+        setTimeout( function(){that.ai.notify(that.AISide)}, 100); // Make computer move not be instant every time.
       }
     }
   };
@@ -168,10 +171,10 @@ var Game = function (autoPlayer) {
   /*
    * starts the game
    */
-  this.start = function (_humanSide) {
+  this.start = function (humanSide) {
     if (this.status = "beginning") {
-      this.humanSide = _humanSide; // Modified to support being X or O.
-      this.AISide = _humanSide === "X" ? "O" : "X"; // Modified to support being X or O.
+      this.humanSide = humanSide; // Modified to support being X or O.
+      this.AISide = humanSide === "X" ? "O" : "X"; // Modified to support being X or O.
       //invoke advanceTo with the initial state
       this.advanceTo(this.currentState);
       this.status = "running";

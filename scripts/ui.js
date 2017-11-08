@@ -33,10 +33,8 @@ ui.stopRobotFlickering = function () {
  * @param turn [String]: the player to switch the view to
  */
 ui.switchViewTo = function (turn) {
-
   //helper function for async calling
   function _switch(_turn) {
-    console.log("Switching view to: " + _turn);
     ui.currentView = "#" + _turn;
     $(ui.currentView).fadeIn("fast");
 
@@ -49,11 +47,11 @@ ui.switchViewTo = function (turn) {
     ui.intialControlsVisible = false;    
 
     $('.intial').fadeOut({
-      duration: "slow",
-      done: function () {
-        $('#restart').fadeIn("fast");
+      duration: 0,
+      done: function () {        
+        $('#restart').fadeIn("slow");
         _switch(turn);
-      }      
+      }
     });    
   }
   else {
