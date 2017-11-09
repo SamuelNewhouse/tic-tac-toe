@@ -1,5 +1,5 @@
 /*
- * object to contain all items accessable to all control functions
+ * object to contain all items accessible to all control functions
  */
 var globals = {};
 
@@ -54,26 +54,30 @@ $("#restart").click(function () {
 
 /*
  * click on cell (onclick div.cell) behavior and control
- * if an empty cell is clicked when the game is running and its the human player's trun
- * get the indices of the clicked cell, craete the next game state, update the UI, and
+ * if an empty cell is clicked when the game is running and it's the human player's turn
+ * get the indices of the clicked cell, create the next game state, update the UI, and
  * advance the game to the newly created state
  */
 $(".cell").each(function () {
   var $this = $(this);
   $this.click(function () {
-    var humanSide = globals.game.humanSide;
-    if (globals.game.status === "running" && globals.game.currentState.turn === humanSide && !$this.hasClass('occupied')) {
-      var indx = parseInt($this.data("indx"));
 
-      var next = new State(globals.game.currentState);
-      next.board[indx] = humanSide;
+    // Avoid getting console errors in case user clicks cells before starting game.
+    if (typeof globals.game !== "undefined") {
+      var humanSide = globals.game.humanSide;
+      if (globals.game.status === "running" && globals.game.currentState.turn === humanSide && !$this.hasClass('occupied')) {
+        var indx = parseInt($this.data("indx"));
 
-      ui.insertAt(indx, humanSide);
+        var next = new State(globals.game.currentState);
+        next.board[indx] = humanSide;
 
-      next.advanceTurn();
+        ui.insertAt(indx, humanSide);
 
-      globals.game.advanceTo(next);
+        next.advanceTurn();
 
+        globals.game.advanceTo(next);
+
+      }
     }
   })
 });
