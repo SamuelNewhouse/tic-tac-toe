@@ -3,7 +3,7 @@ This is my submission for the "Build a Tick Tac Toe Game" project on www.freecod
 
 View here: https://samuelnewhouse.github.io/tic-tac-toe/
 
-
+---
 
 AI from: http://mostafa-samir.github.io/Tic-Tac-Toe-AI/
 
