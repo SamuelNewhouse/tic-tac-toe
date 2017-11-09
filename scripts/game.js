@@ -1,6 +1,6 @@
 /*
  * Represents a state in the game
- * @param old [State]: old state to intialize the new state
+ * @param old [State]: old state to initialize the new state
  */
 var State = function (old) {
   /*
@@ -158,12 +158,12 @@ var Game = function (autoPlayer) {
         console.log("Human turn.");
         ui.switchViewTo("human");
       }
-      else if (this.currentState.turn === this.AISide){
+      else if (this.currentState.turn === this.AISide) {
         console.log("Robot turn.");
         ui.switchViewTo("robot");
         //notify the AI player its turn has come up
         var that = this;
-        setTimeout( function(){that.ai.notify(that.AISide)}, 100); // Make computer move not be instant every time.
+        setTimeout(function () { that.ai.notify(that.AISide) }, 100); // Make computer move not be instant every time.
       }
     }
   };

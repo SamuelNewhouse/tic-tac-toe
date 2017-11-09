@@ -96,7 +96,7 @@ var AI = function (level) {
 
       var availablePositions = state.emptyCells();
 
-      //enumerate next available states using the info form available positions
+      //enumerate next available states using the info from available positions
       var availableNextStates = availablePositions.map(function (pos) {
         var action = new AIAction(pos);
 

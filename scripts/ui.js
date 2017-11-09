@@ -3,8 +3,8 @@
  */
 var ui = {};
 
-//holds the state of the intial controls visibility
-ui.intialControlsVisible = true;
+//holds the state of the initial controls visibility
+ui.initialControlsVisible = true;
 
 //holds the setInterval handle for the robot flickering
 ui.robotFlickeringHandle = 0;
@@ -42,17 +42,17 @@ ui.switchViewTo = function (turn) {
       ui.startRobotFlickering();
   }
 
-  if (ui.intialControlsVisible) {
+  if (ui.initialControlsVisible) {
     // if the game is just starting
-    ui.intialControlsVisible = false;    
+    ui.initialControlsVisible = false;
 
-    $('.intial').fadeOut({
+    $('.initial').fadeOut({
       duration: 0,
-      done: function () {        
+      done: function () {
         $('#restart').fadeIn("slow");
         _switch(turn);
       }
-    });    
+    });
   }
   else {
     // if the game is in an intermediate state
