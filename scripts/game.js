@@ -155,11 +155,9 @@ var Game = function (autoPlayer) {
     else {
       //the game is still running
       if (this.currentState.turn === this.humanSide) { // Modified to support being X or O.
-        console.log("Human turn.");
         ui.switchViewTo("human");
       }
       else if (this.currentState.turn === this.AISide) {
-        console.log("Robot turn.");
         ui.switchViewTo("robot");
         //notify the AI player its turn has come up
         var that = this;
